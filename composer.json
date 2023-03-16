@@ -44,8 +44,11 @@
     },
     "scripts": {
         "test": "vendor/bin/pest",
-        "post-package-install": [
-            "cd bin && yarn"
+        "post-update-cmd": [
+            "cd bin && npm install"
+        ],
+        "post-install-cmd": [
+            "cd bin && npm install"
         ]
     },
     "config": {
