@@ -57,7 +57,9 @@ const callChrome = async pup => {
     let page;
     let output;
     let remoteInstance;
-    const puppet = (pup || require('puppeteer'));
+    const puppet = (pup || require('puppeteer-extra'));
+    const StealthPlugin = require('puppeteer-extra-plugin-stealth')
+    puppet.use(StealthPlugin())
 
     try {
         if (request.options.remoteInstanceUrl || request.options.browserWSEndpoint ) {

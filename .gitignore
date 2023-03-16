@@ -3,4 +3,5 @@ composer.lock
 vendor
 .phpunit.result.cache
 .php-cs-fixer.cache
-
+bin/node_modules
+bin/yarn.lock

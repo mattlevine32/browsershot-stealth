@@ -1,0 +1,11 @@
+{
+  "name": "browsershot-stealth",
+  "version": "1.0.0",
+  "main": "browser.js",
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer": "^19.7.5",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
+  }
+}

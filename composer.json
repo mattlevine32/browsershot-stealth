@@ -43,7 +43,10 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/pest"
+        "test": "vendor/bin/pest",
+        "post-package-install": [
+            "cd bin && yarn"
+        ]
     },
     "config": {
         "sort-packages": true,
