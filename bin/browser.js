@@ -62,24 +62,25 @@ const callChrome = async pup => {
     puppet.use(StealthPlugin())
 
     try {
-        if (request.options.remoteInstanceUrl || request.options.browserWSEndpoint ) {
+        if (request.options.remoteInstanceUrl || request.options.browserWSEndpoint) {
             // default options
             let options = {
                 ignoreHTTPSErrors: request.options.ignoreHttpsErrors
             };
 
             // choose only one method to connect to the browser instance
-            if ( request.options.remoteInstanceUrl ) {
+            if (request.options.remoteInstanceUrl) {
                 options.browserURL = request.options.remoteInstanceUrl;
-            } else if ( request.options.browserWSEndpoint ) {
+            } else if (request.options.browserWSEndpoint) {
                 options.browserWSEndpoint = request.options.browserWSEndpoint;
             }
 
             try {
-                browser = await puppet.connect( options );
+                browser = await puppet.connect(options);
 
                 remoteInstance = true;
-            } catch (exception) { /** does nothing. fallbacks to launching a chromium instance */}
+            } catch (exception) { /** does nothing. fallbacks to launching a chromium instance */
+            }
         }
 
         if (!browser) {
@@ -93,6 +94,13 @@ const callChrome = async pup => {
                     ...process.env
                 },
             });
+
+            if (request.proxy) {
+                await browser.authenticate({
+                    username: request.options.username,
+                    password: request.options.password
+                })
+            }
         }
 
         page = await browser.newPage();
@@ -112,7 +120,7 @@ const callChrome = async pup => {
             request.url = contentUrl;
         }
 
-        page.on('console',  message => consoleMessages.push({
+        page.on('console', message => consoleMessages.push({
             type: message.type(),
             message: message.text(),
             location: message.location()
@@ -196,7 +204,7 @@ const callChrome = async pup => {
                 return;
             }
 
-            interceptedRequest.continue({ headers });
+            interceptedRequest.continue({headers});
         });
 
         if (request.options && request.options.dismissDialogs) {
@@ -328,14 +336,14 @@ const callChrome = async pup => {
         if (request.options.selector) {
             var element;
             const index = request.options.selectorIndex || 0;
-            if(index){
+            if (index) {
                 element = await page.$$(request.options.selector);
-                if(!element.length || typeof element[index] === 'undefined'){
+                if (!element.length || typeof element[index] === 'undefined') {
                     element = null;
-                }else{
+                } else {
                     element = element[index];
                 }
-            }else{
+            } else {
                 element = await page.$(request.options.selector);
             }
             if (element === null) {
