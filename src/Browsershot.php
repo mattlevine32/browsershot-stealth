@@ -24,8 +24,6 @@ class Browsershot {
     protected $html = '';
     protected $noSandbox = false;
     protected $proxyServer = '';
-    protected $proxyUsername = '';
-    protected $proxyPassword = '';
     protected $showBackground = false;
     protected $showScreenshotBackground = true;
     protected $scale = null;
@@ -242,10 +240,8 @@ class Browsershot {
         return $this;
     }
 
-    public function setProxyServer(string $proxyServer, string $username, string $password) {
+    public function setProxyServer(string $proxyServer) {
         $this->proxyServer = $proxyServer;
-        $this->proxyUsername = $username;
-        $this->proxyPassword = $password;
 
         return $this;
     }
@@ -739,10 +735,6 @@ class Browsershot {
             $args[] = '--no-sandbox';
         }
 
-        if ($this->proxyServer) {
-            $args[] = '--proxy-server=' . $this->proxyServer;
-        }
-
         return $args;
     }
 
@@ -752,8 +744,7 @@ class Browsershot {
         $command['options']['args'] = $this->getOptionArgs();
 
         if ($this->proxyServer) {
-            $command['options']['username'] = $this->proxyUsername;
-            $command['options']['password'] = $this->proxyPassword;
+            $command['options']['proxyServer'] = $this->proxyServer;
         }
 
         if (!empty($this->postParams)) {

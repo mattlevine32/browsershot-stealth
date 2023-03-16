@@ -84,10 +84,18 @@ const callChrome = async pup => {
         }
 
         if (!browser) {
+            let newProxyUrl = '';
+            if (request.options.proxyUrl) {
+                const proxyChain = require('proxy-chain');
+                const oldProxyUrl = request.options.proxyServer;
+                newProxyUrl = await proxyChain.anonymizeProxy(oldProxyUrl);
+                newProxyUrl = ' --proxy-server=' + newProxyUrl;
+            }
+
             browser = await puppet.launch({
                 ignoreHTTPSErrors: request.options.ignoreHttpsErrors,
                 executablePath: request.options.executablePath,
-                args: request.options.args || [],
+                args: request.options.args + newProxyUrl || [],
                 pipe: request.options.pipe || false,
                 env: {
                     ...(request.options.env || {}),
@@ -95,12 +103,6 @@ const callChrome = async pup => {
                 },
             });
 
-            if (request.proxy) {
-                await browser.authenticate({
-                    username: request.options.username,
-                    password: request.options.password
-                })
-            }
         }
 
         page = await browser.newPage();
